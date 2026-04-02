@@ -1,0 +1,44 @@
+import { betterAuth } from "better-auth";
+import { drizzleAdapter } from "better-auth/adapters/drizzle";
+import { nextCookies } from "better-auth/next-js";
+
+import { db } from "@/db";
+
+const trustedOrigins = [
+  process.env.BETTER_AUTH_URL,
+  process.env.NEXT_PUBLIC_APP_URL,
+  "http://localhost:3000",
+].filter((value): value is string => Boolean(value));
+
+export const auth = betterAuth({
+  appName: "PKPL Sariwangi",
+  baseURL:
+    process.env.BETTER_AUTH_URL ??
+    process.env.NEXT_PUBLIC_APP_URL ??
+    "http://localhost:3000",
+  secret:
+    process.env.BETTER_AUTH_SECRET ??
+    "development-secret-development-secret",
+  database: drizzleAdapter(db, {
+    provider: "pg",
+  }),
+  socialProviders:
+    process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET
+      ? {
+          google: {
+            clientId: process.env.GOOGLE_CLIENT_ID,
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+            prompt: "select_account",
+          },
+        }
+      : {},
+  trustedOrigins,
+  plugins: [nextCookies()],
+  advanced: {
+    useSecureCookies: process.env.NODE_ENV === "production",
+  },
+  session: {
+    expiresIn: 60 * 60 * 24 * 7,
+    updateAge: 60 * 60 * 12,
+  },
+});
