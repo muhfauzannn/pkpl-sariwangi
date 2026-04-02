@@ -111,8 +111,8 @@ export function ThemeEditor({
                   <FieldContent>
                     <ToggleGroup
                       aria-label="Preset warna"
-                      className="grid w-full grid-cols-1 gap-3 md:grid-cols-2"
-                      orientation="horizontal"
+                      className="w-full"
+                      orientation="vertical"
                       value={[colorPreset]}
                       onValueChange={(values) => {
                         const nextValue = values[0] as ColorPresetId | undefined;

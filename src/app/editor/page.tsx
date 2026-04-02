@@ -18,7 +18,11 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { getServerSession, canEditSite } from "@/lib/session";
+import {
+  getServerSession,
+  canEditSite,
+  isAuthConfigured,
+} from "@/lib/session";
 import { getSiteSettings } from "@/lib/site-settings";
 import { cn } from "@/lib/utils";
 
@@ -29,6 +33,7 @@ export default async function EditorPage() {
   ]);
 
   const editorAccess = canEditSite(session?.user?.email);
+  const authConfigured = isAuthConfigured();
 
   return (
     <main className="mx-auto flex min-h-screen w-full max-w-5xl flex-col gap-6 px-5 py-6 md:px-8 md:py-8">
@@ -65,7 +70,10 @@ export default async function EditorPage() {
             </CardDescription>
           </CardHeader>
           <CardContent className="flex flex-col gap-4">
-            <GoogleSignInButton callbackURL="/editor" />
+            <GoogleSignInButton
+              callbackURL="/editor"
+              disabled={!authConfigured}
+            />
             <p className="text-sm text-muted-foreground">
               Setelah login, email akan dicek terhadap daftar editor yang
               diizinkan.
@@ -102,7 +110,9 @@ export default async function EditorPage() {
               </CardHeader>
               <CardContent className="flex flex-col gap-3 text-sm">
                 <div className="rounded-2xl border border-border bg-background/80 p-4">
-                  <p className="font-medium">{session.user.name}</p>
+                  <p className="font-medium">
+                    {session.user.name ?? "Anggota kelompok"}
+                  </p>
                   <p className="text-muted-foreground">{session.user.email}</p>
                 </div>
                 <div className="flex items-start gap-3 rounded-2xl border border-border bg-background/80 p-4 text-muted-foreground">
