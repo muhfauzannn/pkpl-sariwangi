@@ -16,6 +16,7 @@ import {
   AlertTitle,
 } from "@/components/ui/alert";
 import { buttonVariants } from "@/components/ui/button";
+import { buttonVariants as buttonStyleVariants } from "@/components/ui/button-styles";
 import {
   Card,
   CardContent,
@@ -84,7 +85,7 @@ export default async function Home() {
                   {editorAccess ? (
                     <Link
                       className={cn(
-                        buttonVariants({ size: "sm" }),
+                        buttonStyleVariants({ size: "sm" }),
                         "w-fit"
                       )}
                       href="/editor"
@@ -257,6 +258,10 @@ export default async function Home() {
             </div>
             <Link
               className={cn(buttonVariants({ variant: "outline" }), "w-fit")}
+              className={cn(
+                buttonStyleVariants({ variant: "outline" }),
+                "w-fit"
+              )}
               href="/editor"
             >
               <ArrowRightIcon data-icon="inline-start" />
