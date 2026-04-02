@@ -1,0 +1,51 @@
+"use client";
+
+import { useState, useTransition } from "react";
+import { LoaderCircleIcon, LogInIcon } from "lucide-react";
+
+import { authClient } from "@/lib/auth-client";
+import { Button } from "@/components/ui/button";
+
+type GoogleSignInButtonProps = {
+  callbackURL?: string;
+  disabled?: boolean;
+  label?: string;
+};
+
+export function GoogleSignInButton({
+  callbackURL = "/editor",
+  disabled = false,
+  label = "Masuk dengan Google",
+}: GoogleSignInButtonProps) {
+  const [error, setError] = useState<string | null>(null);
+  const [isPending, startTransition] = useTransition();
+
+  function handleClick() {
+    setError(null);
+
+    startTransition(async () => {
+      const result = await authClient.signIn.social({
+        provider: "google",
+        callbackURL,
+      });
+
+      if (result.error) {
+        setError("Login Google gagal. Periksa konfigurasi OAuth Anda.");
+      }
+    });
+  }
+
+  return (
+    <div className="flex flex-col gap-2">
+      <Button disabled={disabled || isPending} onClick={handleClick}>
+        {isPending ? (
+          <LoaderCircleIcon className="animate-spin" data-icon="inline-start" />
+        ) : (
+          <LogInIcon data-icon="inline-start" />
+        )}
+        {label}
+      </Button>
+      {error ? <p className="text-sm text-destructive">{error}</p> : null}
+    </div>
+  );
+}

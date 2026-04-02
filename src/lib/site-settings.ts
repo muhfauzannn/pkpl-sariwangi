@@ -2,7 +2,11 @@ import { eq } from "drizzle-orm";
 
 import { db, isDatabaseConfigured } from "@/db";
 import { siteSettings } from "@/db/schema";
-import { defaultSiteTheme } from "@/lib/theme";
+import {
+  defaultSiteTheme,
+  type ColorPresetId,
+  type FontPresetId,
+} from "@/lib/theme";
 
 const SITE_SETTINGS_ID = "site";
 
@@ -48,8 +52,8 @@ export async function getSiteSettings() {
 }
 
 export async function saveSiteSettings(input: {
-  colorPreset: typeof defaultSiteTheme.colorPreset;
-  fontPreset: typeof defaultSiteTheme.fontPreset;
+  colorPreset: ColorPresetId;
+  fontPreset: FontPresetId;
   updatedBy: string;
 }) {
   await db

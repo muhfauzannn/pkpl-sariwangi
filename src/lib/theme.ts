@@ -47,6 +47,16 @@ export const fontPresets = [
 export type ColorPresetId = (typeof colorPresets)[number]["id"];
 export type FontPresetId = (typeof fontPresets)[number]["id"];
 
+export const colorPresetIds = colorPresets.map((preset) => preset.id) as [
+  ColorPresetId,
+  ...ColorPresetId[],
+];
+
+export const fontPresetIds = fontPresets.map((preset) => preset.id) as [
+  FontPresetId,
+  ...FontPresetId[],
+];
+
 export const defaultSiteTheme = {
   colorPreset: "samudra" as ColorPresetId,
   fontPreset: "geist" as FontPresetId,

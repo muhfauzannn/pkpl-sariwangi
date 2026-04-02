@@ -49,82 +49,105 @@
 }
 
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --font-sans: var(--font-geist-sans);
+  --font-heading: var(--font-geist-sans);
+  --background: #f3e3d0;
+  --foreground: #26333f;
+  --card: #fff9f2;
+  --card-foreground: #26333f;
+  --popover: #fff9f2;
+  --popover-foreground: #26333f;
+  --primary: #81a6c6;
+  --primary-foreground: #13202b;
+  --secondary: #aacddc;
+  --secondary-foreground: #24303c;
+  --muted: #efe0ce;
+  --muted-foreground: #5b6870;
+  --accent: #d2c4b4;
+  --accent-foreground: #24303c;
+  --destructive: #c85c5c;
+  --border: #d2c4b4;
+  --input: #fffdf9;
+  --ring: #81a6c6;
+  --chart-1: #81a6c6;
+  --chart-2: #aacddc;
+  --chart-3: #d2c4b4;
+  --chart-4: #f3e3d0;
+  --chart-5: #5b6870;
+  --radius: 1rem;
+  --sidebar: #fff9f2;
+  --sidebar-foreground: #26333f;
+  --sidebar-primary: #81a6c6;
+  --sidebar-primary-foreground: #13202b;
+  --sidebar-accent: #aacddc;
+  --sidebar-accent-foreground: #24303c;
+  --sidebar-border: #d2c4b4;
+  --sidebar-ring: #81a6c6;
 }
 
-.dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+body[data-color-preset="embun"] {
+  --background: #f3e3d0;
+  --primary: #aacddc;
+  --secondary: #81a6c6;
+  --accent: #d2c4b4;
+  --ring: #aacddc;
+}
+
+body[data-color-preset="pasir"] {
+  --background: #f3e3d0;
+  --primary: #d2c4b4;
+  --secondary: #aacddc;
+  --accent: #81a6c6;
+  --ring: #d2c4b4;
+}
+
+body[data-color-preset="batu"] {
+  --background: #f3e3d0;
+  --primary: #26333f;
+  --primary-foreground: #f3e3d0;
+  --secondary: #d2c4b4;
+  --accent: #aacddc;
+  --ring: #81a6c6;
+}
+
+body[data-font-preset="manrope"] {
+  --font-sans: var(--font-manrope);
+  --font-heading: var(--font-manrope);
+}
+
+body[data-font-preset="jakarta"] {
+  --font-sans: var(--font-jakarta);
+  --font-heading: var(--font-jakarta);
+}
+
+body[data-font-preset="lora"] {
+  --font-sans: var(--font-lora);
+  --font-heading: var(--font-lora);
 }
 
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
+
+  html {
+    @apply scroll-smooth font-sans;
+  }
+
   body {
     @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
   }
-  html {
-    @apply font-sans;
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-heading);
+  }
+
+  ::selection {
+    background: color-mix(in srgb, var(--primary) 35%, white);
+    color: var(--foreground);
   }
 }
