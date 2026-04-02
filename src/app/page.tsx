@@ -15,7 +15,6 @@ import {
   AlertDescription,
   AlertTitle,
 } from "@/components/ui/alert";
-import { buttonVariants } from "@/components/ui/button";
 import { buttonVariants as buttonStyleVariants } from "@/components/ui/button-styles";
 import {
   Card,
@@ -257,7 +256,6 @@ export default async function Home() {
               </div>
             </div>
             <Link
-              className={cn(buttonVariants({ variant: "outline" }), "w-fit")}
               className={cn(
                 buttonStyleVariants({ variant: "outline" }),
                 "w-fit"
