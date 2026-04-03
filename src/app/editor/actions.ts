@@ -6,6 +6,7 @@ import { z } from "zod";
 
 import { auth } from "@/lib/auth";
 import { isDatabaseConfigured } from "@/db";
+import { type ThemeActionState } from "@/components/editor/theme-action-state";
 import { canEditSite } from "@/lib/session";
 import { saveSiteSettings } from "@/lib/site-settings";
 import {
@@ -13,16 +14,6 @@ import {
   defaultSiteTheme,
   fontPresetIds,
 } from "@/lib/theme";
-
-export type ThemeActionState = {
-  status: "idle" | "success" | "error";
-  message: string;
-};
-
-export const initialThemeActionState: ThemeActionState = {
-  status: "idle",
-  message: "",
-};
 
 const updateThemeSchema = z.object({
   colorPreset: z.enum(colorPresetIds),

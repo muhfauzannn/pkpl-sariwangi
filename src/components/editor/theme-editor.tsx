@@ -3,10 +3,8 @@
 import { useActionState, useMemo, useState } from "react";
 import { PaletteIcon, SaveIcon, TypeIcon } from "lucide-react";
 
-import {
-  initialThemeActionState,
-  updateThemeAction,
-} from "@/app/editor/actions";
+import { updateThemeAction } from "@/app/editor/actions";
+import { initialThemeActionState } from "@/components/editor/theme-action-state";
 import {
   colorPresets,
   defaultSiteTheme,
@@ -26,7 +24,6 @@ import {
 import {
   Field,
   FieldContent,
-  FieldDescription,
   FieldGroup,
   FieldLabel,
 } from "@/components/ui/field";
@@ -79,17 +76,16 @@ export function ThemeEditor({
       <input name="colorPreset" type="hidden" value={colorPreset} />
       <input name="fontPreset" type="hidden" value={fontPreset} />
 
-      <Card>
+      <Card className="rounded-[28px] border border-border bg-card">
         <CardHeader>
-          <CardTitle>Kontrol tampilan</CardTitle>
+          <CardTitle>Style editor</CardTitle>
           <CardDescription>
-            Ubah warna utama dan font website. Perubahan akan langsung
-            diterapkan ke halaman publik setelah tersimpan.
+            Atur warna dan font.
           </CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col gap-6">
           <Tabs className="w-full" defaultValue="warna">
-            <TabsList>
+            <TabsList className="w-full justify-start">
               <TabsTrigger value="warna">
                 <PaletteIcon data-icon="inline-start" />
                 Warna
@@ -104,10 +100,6 @@ export function ThemeEditor({
               <FieldGroup>
                 <Field>
                   <FieldLabel htmlFor="color-preset">Preset warna</FieldLabel>
-                  <FieldDescription>
-                    Semua preset menggunakan empat warna yang sama tanpa
-                    gradient.
-                  </FieldDescription>
                   <FieldContent>
                     <ToggleGroup
                       aria-label="Preset warna"
@@ -124,7 +116,7 @@ export function ThemeEditor({
                     >
                       {colorPresets.map((preset) => (
                         <ToggleGroupItem
-                          className="h-auto justify-start rounded-xl border border-border px-4 py-4 text-left"
+                          className="h-auto justify-start rounded-2xl border border-border px-4 py-4 text-left"
                           key={preset.id}
                           value={preset.id}
                         >
@@ -146,9 +138,6 @@ export function ThemeEditor({
               <FieldGroup>
                 <Field>
                   <FieldLabel htmlFor="font-preset">Font utama</FieldLabel>
-                  <FieldDescription>
-                    Pilih tipografi yang akan dipakai untuk seluruh website.
-                  </FieldDescription>
                   <FieldContent>
                     <Select
                       name="font-preset-preview"
@@ -181,22 +170,20 @@ export function ThemeEditor({
             </TabsContent>
           </Tabs>
 
-          <Card className="border border-border bg-muted/50" size="sm">
+          <Card className="border border-border bg-background/70" size="sm">
             <CardHeader>
-              <CardTitle>Preview pilihan</CardTitle>
-              <CardDescription>
-                Ringkasan preset yang akan disimpan.
-              </CardDescription>
+              <CardTitle>Preview</CardTitle>
+              <CardDescription>Preset saat ini.</CardDescription>
             </CardHeader>
             <CardContent className="grid gap-3 md:grid-cols-2">
-              <div className="rounded-xl border border-border bg-background p-4">
+              <div className="rounded-2xl border border-border bg-muted/40 p-4">
                 <p className="text-sm text-muted-foreground">Warna aktif</p>
                 <p className="font-medium">{currentColor?.label}</p>
                 <p className="text-sm text-muted-foreground">
                   {currentColor?.description}
                 </p>
               </div>
-              <div className="rounded-xl border border-border bg-background p-4">
+              <div className="rounded-2xl border border-border bg-muted/40 p-4">
                 <p className="text-sm text-muted-foreground">Font aktif</p>
                 <p className="font-medium">{currentFont?.label}</p>
                 <p className="text-sm text-muted-foreground">
@@ -215,7 +202,7 @@ export function ThemeEditor({
                 : "text-sm text-muted-foreground"
             }
           >
-            {state.message || "Simpan saat preset sudah sesuai."}
+            {state.message || "Simpan untuk menerapkan."}
           </p>
           <Button disabled={isPending} type="submit">
             <SaveIcon data-icon="inline-start" />

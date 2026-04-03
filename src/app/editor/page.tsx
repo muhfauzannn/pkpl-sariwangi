@@ -1,15 +1,20 @@
 import Link from "next/link";
-import { MailIcon, ShieldCheckIcon, WandSparklesIcon } from "lucide-react";
+import {
+  LockKeyholeIcon,
+  MailIcon,
+  UserRoundIcon,
+} from "lucide-react";
 
-import { ThemeEditor } from "@/components/editor/theme-editor";
 import { GoogleSignInButton } from "@/components/auth/google-sign-in-button";
 import { SignOutButton } from "@/components/auth/sign-out-button";
-import { Badge } from "@/components/ui/badge";
+import { ThemeEditor } from "@/components/editor/theme-editor";
 import {
   Alert,
   AlertDescription,
   AlertTitle,
 } from "@/components/ui/alert";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button-styles";
 import {
   Card,
@@ -18,12 +23,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { groupMembers, siteIdentity } from "@/lib/group-data";
 import {
-  getServerSession,
   canEditSite,
+  getServerSession,
   isAuthConfigured,
 } from "@/lib/session";
 import { getSiteSettings } from "@/lib/site-settings";
+import { getColorPresetMeta, getFontPresetMeta } from "@/lib/theme";
 import { cn } from "@/lib/utils";
 
 export default async function EditorPage() {
@@ -34,122 +41,230 @@ export default async function EditorPage() {
 
   const editorAccess = canEditSite(session?.user?.email);
   const authConfigured = isAuthConfigured();
+  const colorMeta = getColorPresetMeta(siteTheme.colorPreset);
+  const fontMeta = getFontPresetMeta(siteTheme.fontPreset);
 
   return (
-    <main className="mx-auto flex min-h-screen w-full max-w-5xl flex-col gap-6 px-5 py-6 md:px-8 md:py-8">
-      <header className="flex flex-col gap-4 rounded-[28px] border border-border bg-card px-6 py-5 shadow-sm md:flex-row md:items-center md:justify-between">
-        <div className="flex flex-col gap-2">
-          <Badge variant="secondary">Area editor internal</Badge>
-          <h1 className="font-heading text-3xl font-semibold">
+    <>
+      <nav className="fixed inset-x-0 top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur">
+        <div className="mx-auto flex h-20 w-full max-w-7xl items-center justify-between px-5 md:px-8">
+          <div className="flex items-center gap-8">
+            <div className="font-heading text-xl font-bold tracking-tight">
+              {siteIdentity.teamName}
+            </div>
+            <div className="hidden items-center gap-6 text-sm text-muted-foreground md:flex">
+              <a href="#editor-panel">Editor</a>
+              <a href="#preview-panel">Preview</a>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <Link
+              className={cn(
+                buttonVariants({ variant: "outline", size: "sm" }),
+                "hidden md:inline-flex"
+              )}
+              href="/"
+            >
+              Kembali
+            </Link>
+            {session ? <SignOutButton /> : null}
+          </div>
+        </div>
+      </nav>
+
+      <main className="mx-auto flex min-h-screen w-full max-w-7xl flex-col gap-8 px-5 pb-16 pt-28 md:px-8">
+        <header className="flex flex-col gap-3">
+          <Badge variant="secondary" className="w-fit">
+            Edit mode
+          </Badge>
+          <h1 className="font-heading text-4xl font-semibold tracking-tight md:text-5xl">
             Kontrol tampilan website
           </h1>
           <p className="max-w-2xl text-muted-foreground">
-            Hanya email anggota kelompok yang ada di `EDITOR_EMAILS` yang bisa
-            menyimpan perubahan ke database.
+            Hanya anggota yang login dengan email terdaftar yang bisa menyimpan
+            perubahan.
           </p>
-        </div>
+        </header>
 
-        <div className="flex flex-wrap gap-3">
-          <Link
-            className={cn(buttonVariants({ variant: "outline" }), "w-fit")}
-            href="/"
-          >
-            Kembali ke beranda
-          </Link>
-          {session ? <SignOutButton /> : null}
-        </div>
-      </header>
+        {!session ? (
+          <Card className="max-w-xl rounded-[28px] border border-border bg-card">
+            <CardHeader>
+              <CardTitle>Login Google diperlukan</CardTitle>
+              <CardDescription>
+                Login untuk masuk ke editor.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="flex flex-col gap-4">
+              <GoogleSignInButton
+                callbackURL="/editor"
+                disabled={!authConfigured}
+                label="Login Google"
+              />
+              {!authConfigured ? (
+                <p className="text-sm text-muted-foreground">
+                  OAuth belum aktif. Lengkapi env terlebih dulu.
+                </p>
+              ) : null}
+            </CardContent>
+          </Card>
+        ) : null}
 
-      {!session ? (
-        <Card className="rounded-[28px]">
-          <CardHeader>
-            <CardTitle>Login Google diperlukan</CardTitle>
-            <CardDescription>
-              Halaman ini hanya dipakai untuk editor internal. Pengunjung umum
-              cukup melihat halaman utama.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="flex flex-col gap-4">
-            <GoogleSignInButton
-              callbackURL="/editor"
-              disabled={!authConfigured}
-            />
-            <p className="text-sm text-muted-foreground">
-              Setelah login, email akan dicek terhadap daftar editor yang
-              diizinkan.
-            </p>
-          </CardContent>
-        </Card>
-      ) : null}
-
-      {session && !editorAccess ? (
-        <Alert>
-          <MailIcon />
-          <AlertTitle>Email ini belum masuk daftar editor</AlertTitle>
-          <AlertDescription>
-            Akun lain tetap bisa melihat website publik, tetapi perubahan tema
-            dibatasi untuk anggota kelompok yang di-whitelist.
-          </AlertDescription>
-        </Alert>
-      ) : null}
-
-      {session && editorAccess ? (
-        <section className="grid gap-4 lg:grid-cols-[1.15fr_0.85fr]">
-          <ThemeEditor
-            initialColorPreset={siteTheme.colorPreset}
-            initialFontPreset={siteTheme.fontPreset}
-          />
-
-          <div className="flex flex-col gap-4">
-            <Card className="rounded-[28px]">
-              <CardHeader>
-                <CardTitle>Akses aktif</CardTitle>
-                <CardDescription>
-                  Editor yang sedang login saat ini.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="flex flex-col gap-3 text-sm">
-                <div className="rounded-2xl border border-border bg-background/80 p-4">
-                  <p className="font-medium">
-                    {session.user.name ?? "Anggota kelompok"}
-                  </p>
-                  <p className="text-muted-foreground">{session.user.email}</p>
-                </div>
-                <div className="flex items-start gap-3 rounded-2xl border border-border bg-background/80 p-4 text-muted-foreground">
-                  <ShieldCheckIcon className="mt-0.5" />
-                  <p>
-                    Perubahan disimpan ke PostgreSQL melalui Drizzle dan akan
-                    langsung dipakai halaman publik setelah submit berhasil.
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="rounded-[28px]">
-              <CardHeader>
-                <CardTitle>Catatan implementasi</CardTitle>
-                <CardDescription>
-                  Struktur akses yang dipakai di project ini.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="flex flex-col gap-3 text-sm text-muted-foreground">
-                <div className="flex items-start gap-3 rounded-2xl border border-border bg-background/80 p-4">
-                  <WandSparklesIcon className="mt-0.5" />
-                  <p>
-                    Hanya warna dan font yang diubah dari editor, sedangkan
-                    konten biodata tetap tersedia publik di beranda.
-                  </p>
-                </div>
-                <div className="rounded-2xl border border-border bg-background/80 p-4">
-                  <p className="font-medium text-foreground">Current preset</p>
-                  <p>Warna: {siteTheme.colorPreset}</p>
-                  <p>Font: {siteTheme.fontPreset}</p>
-                </div>
-              </CardContent>
-            </Card>
+        {session && !editorAccess ? (
+          <div className="flex max-w-2xl flex-col gap-4">
+            <Alert>
+              <MailIcon />
+              <AlertTitle>Akses editor ditolak</AlertTitle>
+              <AlertDescription>
+                Akun ini berhasil login, tetapi email belum ada di
+                `EDITOR_EMAILS`.
+              </AlertDescription>
+            </Alert>
+            <Link
+              className={cn(buttonVariants({ variant: "outline" }), "w-fit")}
+              href="/"
+            >
+              Kembali ke halaman publik
+            </Link>
           </div>
-        </section>
-      ) : null}
-    </main>
+        ) : null}
+
+        {session && editorAccess ? (
+          <section className="grid gap-8 lg:grid-cols-[360px_minmax(0,1fr)]">
+            <aside id="editor-panel" className="lg:sticky lg:top-28 lg:h-fit">
+              <div className="flex flex-col gap-4">
+                <ThemeEditor
+                  initialColorPreset={siteTheme.colorPreset}
+                  initialFontPreset={siteTheme.fontPreset}
+                />
+                <Card className="rounded-[28px] border border-border bg-card">
+                  <CardHeader>
+                    <CardTitle>Akun aktif</CardTitle>
+                    <CardDescription>Editor yang sedang login.</CardDescription>
+                  </CardHeader>
+                  <CardContent className="flex items-start gap-4">
+                    <Avatar className="size-12 rounded-2xl">
+                      <AvatarFallback className="rounded-2xl">
+                        {session.user.name?.slice(0, 2).toUpperCase() ?? "ED"}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="flex flex-col gap-1">
+                      <p className="font-medium">
+                        {session.user.name ?? "Anggota kelompok"}
+                      </p>
+                      <p className="text-sm text-muted-foreground">
+                        {session.user.email}
+                      </p>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </aside>
+
+            <section id="preview-panel" className="flex flex-col gap-6">
+              <div className="flex flex-col gap-4 rounded-[32px] border border-border bg-card p-6 shadow-sm">
+                <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
+                  <div className="flex flex-col gap-2">
+                    <p className="text-xs font-semibold uppercase tracking-[0.22em] text-muted-foreground">
+                      Preview
+                    </p>
+                    <h2 className="font-heading text-3xl font-semibold tracking-tight">
+                      Direktori anggota
+                    </h2>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    <Badge>{colorMeta.label}</Badge>
+                    <Badge variant="secondary">{fontMeta.label}</Badge>
+                  </div>
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  Halaman publik akan memakai preset ini setelah disimpan.
+                </p>
+              </div>
+
+              <div className="grid gap-6 md:grid-cols-2">
+                {groupMembers.map((member) => (
+                  <Card
+                    className="rounded-[28px] border border-border bg-background shadow-sm"
+                    key={member.name}
+                  >
+                    <CardHeader>
+                      <div className="flex items-start gap-4">
+                        <Avatar className="size-16 rounded-2xl">
+                          <AvatarFallback className="rounded-2xl text-base">
+                            {member.initials}
+                          </AvatarFallback>
+                        </Avatar>
+                        <div className="flex flex-1 flex-col gap-2">
+                          <div className="flex items-start justify-between gap-3">
+                            <div className="flex flex-col gap-1">
+                              <CardTitle>{member.name}</CardTitle>
+                              <CardDescription>{member.role}</CardDescription>
+                            </div>
+                            <div className="rounded-xl border border-border bg-muted/40 p-2 text-muted-foreground">
+                              <UserRoundIcon className="size-4" />
+                            </div>
+                          </div>
+                          <div className="flex flex-wrap gap-2">
+                            {member.tags.map((tag) => (
+                              <Badge key={tag} variant="secondary">
+                                {tag}
+                              </Badge>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    </CardHeader>
+                    <CardContent className="flex flex-col gap-4">
+                      <div className="rounded-2xl border border-border bg-muted/30 p-4">
+                        <p className="text-sm leading-relaxed text-muted-foreground">
+                          {member.focus}
+                        </p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+
+              <div className="grid gap-4 md:grid-cols-3">
+                <Card className="rounded-[28px] border border-border bg-card">
+                  <CardHeader>
+                    <CardTitle>Flow</CardTitle>
+                    <CardDescription>Publik dan editor.</CardDescription>
+                  </CardHeader>
+                  <CardContent className="text-sm text-muted-foreground">
+                    Publik melihat biodata. Editor mengubah tema.
+                  </CardContent>
+                </Card>
+                <Card className="rounded-[28px] border border-border bg-card">
+                  <CardHeader>
+                    <CardTitle>Warna aktif</CardTitle>
+                    <CardDescription>{colorMeta.label}</CardDescription>
+                  </CardHeader>
+                  <CardContent className="text-sm text-muted-foreground">
+                    {colorMeta.description}
+                  </CardContent>
+                </Card>
+                <Card className="rounded-[28px] border border-border bg-card">
+                  <CardHeader>
+                    <CardTitle>Font aktif</CardTitle>
+                    <CardDescription>{fontMeta.label}</CardDescription>
+                  </CardHeader>
+                  <CardContent className="text-sm text-muted-foreground">
+                    {fontMeta.description}
+                  </CardContent>
+                </Card>
+              </div>
+
+              <div className="flex items-center gap-3 rounded-[28px] border border-border bg-card p-5 text-sm text-muted-foreground">
+                <LockKeyholeIcon className="size-4" />
+                Simpan perubahan di kiri. Hasilnya langsung terlihat di halaman
+                publik.
+              </div>
+            </section>
+          </section>
+        ) : null}
+      </main>
+    </>
   );
 }
