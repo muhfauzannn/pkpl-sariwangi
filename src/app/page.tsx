@@ -67,7 +67,6 @@ export default async function Home() {
             ) : (
               <div className="w-fit">
                 <GoogleSignInButton
-                  callbackURL="/editor"
                   disabled={!authConfigured}
                   label="Login"
                 />

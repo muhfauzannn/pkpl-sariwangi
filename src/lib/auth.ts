@@ -8,18 +8,18 @@ import * as schema from "@/db/schema";
 const trustedOrigins = [
   process.env.BETTER_AUTH_URL,
   process.env.NEXT_PUBLIC_APP_URL,
-  "http://localhost:3000",
+  "https://pkpl-sariwangi.vercel.app",
+  process.env.NODE_ENV === "development" ? "http://localhost:3000" : null,
 ].filter((value): value is string => Boolean(value));
 
 export const auth = betterAuth({
   appName: "PKPL Sariwangi",
   baseURL:
-    process.env.BETTER_AUTH_URL ??
-    process.env.NEXT_PUBLIC_APP_URL ??
-    "http://localhost:3000",
+    process.env.BETTER_AUTH_URL ||
+    process.env.NEXT_PUBLIC_APP_URL ||
+    "https://pkpl-sariwangi.vercel.app",
   secret:
-    process.env.BETTER_AUTH_SECRET ??
-    "development-secret-development-secret",
+    process.env.BETTER_AUTH_SECRET ?? "development-secret-development-secret",
   database: drizzleAdapter(db, {
     provider: "pg",
     schema,

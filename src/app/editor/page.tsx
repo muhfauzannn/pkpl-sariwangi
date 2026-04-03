@@ -90,7 +90,6 @@ export default async function EditorPage() {
             </CardHeader>
             <CardContent className="flex flex-col gap-4">
               <GoogleSignInButton
-                callbackURL="/editor"
                 disabled={!authConfigured}
                 label="Login Google"
               />

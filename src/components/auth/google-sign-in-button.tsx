@@ -6,6 +6,15 @@ import { LoaderCircleIcon, LogInIcon } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
 import { Button } from "@/components/ui/button";
 
+const defaultCallbackURL = () => {
+  if (typeof window !== "undefined") {
+    return window.location.origin + "/editor";
+  }
+  return (
+    (process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000") + "/editor"
+  );
+};
+
 type GoogleSignInButtonProps = {
   callbackURL?: string;
   disabled?: boolean;
@@ -13,7 +22,7 @@ type GoogleSignInButtonProps = {
 };
 
 export function GoogleSignInButton({
-  callbackURL = process.env.NEXT_PUBLIC_APP_URL + "/editor",
+  callbackURL = defaultCallbackURL(),
   disabled = false,
   label = "Masuk dengan Google",
 }: GoogleSignInButtonProps) {
