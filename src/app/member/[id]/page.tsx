@@ -4,7 +4,7 @@ import { ChevronLeftIcon } from "lucide-react";
 
 import { db } from "@/db";
 import { member, user } from "@/db/schema";
-import { eq } from "drizzle-orm";
+import { eq, or } from "drizzle-orm";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { buttonVariants } from "@/components/ui/button-styles";
 import { cn } from "@/lib/utils";
@@ -23,7 +23,10 @@ export default async function MemberPage({
   const memberRecords = await db
     .select()
     .from(member)
-    .leftJoin(user, eq(member.userId, user.id))
+    .leftJoin(
+      user,
+      or(eq(member.userId, user.id), eq(member.email, user.email)),
+    )
     .where(eq(member.id, id))
     .limit(1);
 
@@ -32,7 +35,7 @@ export default async function MemberPage({
   }
 
   const { member: memberData, user: userData } = memberRecords[0];
-  const imageUrl = userData?.image || memberData.image;
+  const imageUrl = userData?.image;
   const canEdit = session?.user?.email === memberData.email;
 
   return (

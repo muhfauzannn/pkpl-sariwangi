@@ -98,8 +98,8 @@ export function ThemeEditor({
                   <FieldContent>
                     <ToggleGroup
                       aria-label="Preset warna"
-                      className="w-full"
-                      orientation="vertical"
+                      className="w-full flex flex-wrap gap-2"
+                      orientation="horizontal"
                       value={[colorPreset]}
                       onValueChange={(values) => {
                         const nextValue = values[0] as
@@ -113,12 +113,12 @@ export function ThemeEditor({
                     >
                       {colorPresets.map((preset) => (
                         <ToggleGroupItem
-                          className="h-auto justify-start gap-4 rounded-2xl border border-border px-4 py-4 text-left"
+                          className="h-auto justify-start gap-4 text-left"
                           key={preset.id}
                           value={preset.id}
                         >
                           <div className="flex justify-center gap-3">
-                            <div className="flex shrink-0 gap-2 rounded-lg border border-border/50 overflow-hidden">
+                            <div className="flex shrink-0 gap-2 rounded-lg border overflow-hidden">
                               <div
                                 className="w-8 h-8"
                                 style={{

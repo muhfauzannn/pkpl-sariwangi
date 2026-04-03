@@ -22,7 +22,7 @@ import { getColorPresetMeta, getFontPresetMeta } from "@/lib/theme";
 import { cn } from "@/lib/utils";
 import { db } from "@/db";
 import { member, user } from "@/db/schema";
-import { eq } from "drizzle-orm";
+import { eq, or } from "drizzle-orm";
 
 export default async function EditorPage() {
   const session = await getServerSession();
@@ -33,7 +33,10 @@ export default async function EditorPage() {
     db
       .select()
       .from(member)
-      .leftJoin(user, eq(member.userId, user.id))
+      .leftJoin(
+        user,
+        or(eq(member.userId, user.id), eq(member.email, user.email)),
+      )
       .orderBy(member.createdAt),
   ]);
   const authConfigured = isAuthConfigured();
@@ -49,8 +52,7 @@ export default async function EditorPage() {
               {siteIdentity.teamName}
             </div>
             <div className="hidden items-center gap-6 text-sm text-muted-foreground md:flex">
-              <a href="#editor-panel">Editor</a>
-              <a href="#preview-panel">Preview</a>
+              <Link href="/">Home</Link>
             </div>
           </div>
 
@@ -71,9 +73,6 @@ export default async function EditorPage() {
 
       <main className="mx-auto flex min-h-screen w-full max-w-7xl flex-col gap-8 px-5 pb-16 pt-28 md:px-8">
         <header className="flex flex-col gap-3">
-          <Badge variant="secondary" className="w-fit">
-            Edit mode
-          </Badge>
           <h1 className="font-heading text-4xl font-semibold tracking-tight md:text-5xl">
             Kontrol tampilan website
           </h1>
@@ -110,8 +109,8 @@ export default async function EditorPage() {
               <MailIcon />
               <AlertTitle>Akses editor ditolak</AlertTitle>
               <AlertDescription>
-                Akun ini berhasil login, tetapi email belum ada di
-                `EDITOR_EMAILS`.
+                Akun anda ({session.user.email}) tidak memiliki izin untuk
+                mengedit situs.
               </AlertDescription>
             </Alert>
             <Link
@@ -134,7 +133,6 @@ export default async function EditorPage() {
                 <Card className="rounded-[28px] border border-border bg-card">
                   <CardHeader>
                     <CardTitle>Akun aktif</CardTitle>
-                    <CardDescription>Editor yang sedang login.</CardDescription>
                   </CardHeader>
                   <CardContent className="flex items-start gap-4">
                     <Avatar className="size-12 rounded-2xl">
@@ -171,14 +169,11 @@ export default async function EditorPage() {
                     <Badge variant="secondary">{fontMeta.label}</Badge>
                   </div>
                 </div>
-                <p className="text-sm text-muted-foreground">
-                  Halaman publik akan memakai preset ini setelah disimpan.
-                </p>
               </div>
 
               <div className="grid gap-6 md:grid-cols-2">
                 {memberRecords.map(({ member: m, user: u }) => {
-                  const imageUrl = u?.image || m.image;
+                  const imageUrl = u?.image;
                   const initials = m.name
                     .split(" ")
                     .map((n) => n[0])
@@ -229,42 +224,6 @@ export default async function EditorPage() {
                     </Card>
                   );
                 })}
-              </div>
-
-              <div className="grid gap-4 md:grid-cols-3">
-                <Card className="rounded-[28px] border border-border bg-card">
-                  <CardHeader>
-                    <CardTitle>Flow</CardTitle>
-                    <CardDescription>Publik dan editor.</CardDescription>
-                  </CardHeader>
-                  <CardContent className="text-sm text-muted-foreground">
-                    Publik melihat biodata. Editor mengubah tema.
-                  </CardContent>
-                </Card>
-                <Card className="rounded-[28px] border border-border bg-card">
-                  <CardHeader>
-                    <CardTitle>Warna aktif</CardTitle>
-                    <CardDescription>{colorMeta.label}</CardDescription>
-                  </CardHeader>
-                  <CardContent className="text-sm text-muted-foreground">
-                    {colorMeta.description}
-                  </CardContent>
-                </Card>
-                <Card className="rounded-[28px] border border-border bg-card">
-                  <CardHeader>
-                    <CardTitle>Font aktif</CardTitle>
-                    <CardDescription>{fontMeta.label}</CardDescription>
-                  </CardHeader>
-                  <CardContent className="text-sm text-muted-foreground">
-                    {fontMeta.description}
-                  </CardContent>
-                </Card>
-              </div>
-
-              <div className="flex items-center gap-3 rounded-[28px] border border-border bg-card p-5 text-sm text-muted-foreground">
-                <LockKeyholeIcon className="size-4" />
-                Simpan perubahan di kiri. Hasilnya langsung terlihat di halaman
-                publik.
               </div>
             </section>
           </section>

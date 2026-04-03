@@ -19,7 +19,7 @@ import { canEditSite, getServerSession, isAuthConfigured } from "@/lib/session";
 import { cn } from "@/lib/utils";
 import { db } from "@/db";
 import { member, user } from "@/db/schema";
-import { eq } from "drizzle-orm";
+import { eq, or } from "drizzle-orm";
 
 export default async function Home() {
   const session = await getServerSession();
@@ -29,7 +29,10 @@ export default async function Home() {
     db
       .select()
       .from(member)
-      .leftJoin(user, eq(member.userId, user.id))
+      .leftJoin(
+        user,
+        or(eq(member.userId, user.id), eq(member.email, user.email)),
+      )
       .orderBy(member.createdAt),
     canEditSite(session?.user?.email),
   ]);
@@ -114,7 +117,7 @@ export default async function Home() {
 
               <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4">
                 {memberRecords.map(({ member: m, user: u }) => {
-                  const imageUrl = u?.image || m.image;
+                  const imageUrl = u?.image;
                   const initials = m.name
                     .split(" ")
                     .map((n) => n[0])

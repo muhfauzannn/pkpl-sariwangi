@@ -8,7 +8,6 @@ export const member = pgTable("member", {
   email: text("email").notNull(),
   role: text("role").notNull(),
   bio: text("bio"),
-  image: text("image"),
   userId: text("user_id").references(() => user.id, { onDelete: "set null" }),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at")

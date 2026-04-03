@@ -1,5 +1,5 @@
 export const siteIdentity = {
-  teamName: "Kelompok Sariwangi",
+  teamName: "Sariwangi",
   subtitle: "Biodata kelompok dengan akses publik dan editor internal.",
   summary: "Lihat profil anggota tanpa login. Editor hanya untuk anggota.",
   course: "Project Fullstack",
