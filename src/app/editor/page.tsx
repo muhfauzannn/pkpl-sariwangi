@@ -1,18 +1,10 @@
 import Link from "next/link";
-import {
-  LockKeyholeIcon,
-  MailIcon,
-  UserRoundIcon,
-} from "lucide-react";
+import { LockKeyholeIcon, MailIcon, UserRoundIcon } from "lucide-react";
 
 import { GoogleSignInButton } from "@/components/auth/google-sign-in-button";
 import { SignOutButton } from "@/components/auth/sign-out-button";
 import { ThemeEditor } from "@/components/editor/theme-editor";
-import {
-  Alert,
-  AlertDescription,
-  AlertTitle,
-} from "@/components/ui/alert";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button-styles";
@@ -24,22 +16,18 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { groupMembers, siteIdentity } from "@/lib/group-data";
-import {
-  canEditSite,
-  getServerSession,
-  isAuthConfigured,
-} from "@/lib/session";
+import { canEditSite, getServerSession, isAuthConfigured } from "@/lib/session";
 import { getSiteSettings } from "@/lib/site-settings";
 import { getColorPresetMeta, getFontPresetMeta } from "@/lib/theme";
 import { cn } from "@/lib/utils";
 
 export default async function EditorPage() {
-  const [session, siteTheme] = await Promise.all([
-    getServerSession(),
-    getSiteSettings(),
-  ]);
+  const session = await getServerSession();
 
-  const editorAccess = canEditSite(session?.user?.email);
+  const [siteTheme, editorAccess] = await Promise.all([
+    getSiteSettings(),
+    canEditSite(session?.user?.email),
+  ]);
   const authConfigured = isAuthConfigured();
   const colorMeta = getColorPresetMeta(siteTheme.colorPreset);
   const fontMeta = getFontPresetMeta(siteTheme.fontPreset);
@@ -62,7 +50,7 @@ export default async function EditorPage() {
             <Link
               className={cn(
                 buttonVariants({ variant: "outline", size: "sm" }),
-                "hidden md:inline-flex"
+                "hidden md:inline-flex",
               )}
               href="/"
             >
@@ -91,9 +79,7 @@ export default async function EditorPage() {
           <Card className="max-w-xl rounded-[28px] border border-border bg-card">
             <CardHeader>
               <CardTitle>Login Google diperlukan</CardTitle>
-              <CardDescription>
-                Login untuk masuk ke editor.
-              </CardDescription>
+              <CardDescription>Login untuk masuk ke editor.</CardDescription>
             </CardHeader>
             <CardContent className="flex flex-col gap-4">
               <GoogleSignInButton

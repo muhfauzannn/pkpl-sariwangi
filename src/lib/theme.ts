@@ -2,22 +2,34 @@ export const colorPresets = [
   {
     id: "samudra",
     label: "Samudra",
-    description: "Biru lembut sebagai fokus utama dengan latar krem hangat.",
+    description: "Biru lembut dengan latar krem hangat.",
+    primary: "#81a6c6",
+    secondary: "#aacddc",
+    background: "#f3e3d0",
   },
   {
     id: "embun",
     label: "Embun",
-    description: "Nuansa segar dengan hijau kebiruan yang lebih ringan.",
+    description: "Nuansa segar dengan hijau kebiruan.",
+    primary: "#aacddc",
+    secondary: "#81a6c6",
+    background: "#f3e3d0",
   },
   {
     id: "pasir",
     label: "Pasir",
-    description: "Kesan hangat dan rapi untuk profil kelompok yang formal.",
+    description: "Kesan hangat dan rapi.",
+    primary: "#d2c4b4",
+    secondary: "#aacddc",
+    background: "#f3e3d0",
   },
   {
     id: "batu",
     label: "Batu",
-    description: "Aksen netral yang tetap memakai palet yang sama.",
+    description: "Aksen netral dengan palet yang sama.",
+    primary: "#81a6c6",
+    secondary: "#d2c4b4",
+    background: "#f3e3d0",
   },
 ] as const;
 

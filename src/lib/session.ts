@@ -1,31 +1,35 @@
 import { headers } from "next/headers";
+import { eq } from "drizzle-orm";
 
 import { auth } from "@/lib/auth";
+import { db } from "@/db";
+import { allowedEmail } from "@/db/schema";
 
-function parseEditorEmails() {
-  return new Set(
-    (process.env.EDITOR_EMAILS ?? "")
-      .split(",")
-      .map((email) => email.trim().toLowerCase())
-      .filter(Boolean)
-  );
-}
-
-export function canEditSite(email?: string | null) {
+export async function canEditSite(email?: string | null) {
   if (!email) {
     return false;
   }
 
-  return parseEditorEmails().has(email.toLowerCase());
+  try {
+    const allowed = await db
+      .select()
+      .from(allowedEmail)
+      .where(eq(allowedEmail.email, email.toLowerCase()))
+      .limit(1);
+
+    return allowed.length > 0;
+  } catch {
+    return false;
+  }
 }
 
 export function isAuthConfigured() {
   return Boolean(
     process.env.DATABASE_URL &&
-      process.env.BETTER_AUTH_SECRET &&
-      process.env.BETTER_AUTH_URL &&
-      process.env.GOOGLE_CLIENT_ID &&
-      process.env.GOOGLE_CLIENT_SECRET
+    process.env.BETTER_AUTH_SECRET &&
+    process.env.BETTER_AUTH_URL &&
+    process.env.GOOGLE_CLIENT_ID &&
+    process.env.GOOGLE_CLIENT_SECRET,
   );
 }
 

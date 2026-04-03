@@ -36,10 +36,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  ToggleGroup,
-  ToggleGroupItem,
-} from "@/components/ui/toggle-group";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
 type ThemeEditorProps = {
   initialColorPreset?: string | null;
@@ -51,24 +48,24 @@ export function ThemeEditor({
   initialFontPreset,
 }: ThemeEditorProps) {
   const [colorPreset, setColorPreset] = useState<ColorPresetId>(
-    (initialColorPreset as ColorPresetId) ?? defaultSiteTheme.colorPreset
+    (initialColorPreset as ColorPresetId) ?? defaultSiteTheme.colorPreset,
   );
   const [fontPreset, setFontPreset] = useState<FontPresetId>(
-    (initialFontPreset as FontPresetId) ?? defaultSiteTheme.fontPreset
+    (initialFontPreset as FontPresetId) ?? defaultSiteTheme.fontPreset,
   );
   const [state, formAction, isPending] = useActionState(
     updateThemeAction,
-    initialThemeActionState
+    initialThemeActionState,
   );
 
   const currentColor = useMemo(
     () => colorPresets.find((preset) => preset.id === colorPreset),
-    [colorPreset]
+    [colorPreset],
   );
 
   const currentFont = useMemo(
     () => fontPresets.find((preset) => preset.id === fontPreset),
-    [fontPreset]
+    [fontPreset],
   );
 
   return (
@@ -79,9 +76,7 @@ export function ThemeEditor({
       <Card className="rounded-[28px] border border-border bg-card">
         <CardHeader>
           <CardTitle>Style editor</CardTitle>
-          <CardDescription>
-            Atur warna dan font.
-          </CardDescription>
+          <CardDescription>Atur warna dan font.</CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col gap-6">
           <Tabs className="w-full" defaultValue="warna">
@@ -107,7 +102,9 @@ export function ThemeEditor({
                       orientation="vertical"
                       value={[colorPreset]}
                       onValueChange={(values) => {
-                        const nextValue = values[0] as ColorPresetId | undefined;
+                        const nextValue = values[0] as
+                          | ColorPresetId
+                          | undefined;
 
                         if (nextValue) {
                           setColorPreset(nextValue);
@@ -116,15 +113,27 @@ export function ThemeEditor({
                     >
                       {colorPresets.map((preset) => (
                         <ToggleGroupItem
-                          className="h-auto justify-start rounded-2xl border border-border px-4 py-4 text-left"
+                          className="h-auto justify-start gap-4 rounded-2xl border border-border px-4 py-4 text-left"
                           key={preset.id}
                           value={preset.id}
                         >
-                          <div className="flex flex-col gap-1">
-                            <span className="font-medium">{preset.label}</span>
-                            <span className="text-sm text-muted-foreground">
-                              {preset.description}
-                            </span>
+                          <div className="flex justify-center gap-3">
+                            <div className="flex shrink-0 gap-2 rounded-lg border border-border/50 overflow-hidden">
+                              <div
+                                className="w-8 h-8"
+                                style={{
+                                  backgroundColor: preset.primary,
+                                }}
+                                title={preset.primary}
+                              />
+                              <div
+                                className="w-8 h-8"
+                                style={{
+                                  backgroundColor: preset.secondary,
+                                }}
+                                title={preset.secondary}
+                              />
+                            </div>
                           </div>
                         </ToggleGroupItem>
                       ))}
@@ -143,7 +152,9 @@ export function ThemeEditor({
                       name="font-preset-preview"
                       value={fontPreset}
                       onValueChange={(value) =>
-                        setFontPreset((value as FontPresetId | null) ?? fontPreset)
+                        setFontPreset(
+                          (value as FontPresetId | null) ?? fontPreset,
+                        )
                       }
                     >
                       <SelectTrigger className="w-full" id="font-preset">
