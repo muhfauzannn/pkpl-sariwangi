@@ -9,7 +9,9 @@ const trustedOrigins = [
   process.env.BETTER_AUTH_URL,
   process.env.NEXT_PUBLIC_APP_URL,
   "https://pkpl-sariwangi.vercel.app",
-  process.env.NODE_ENV === "development" ? "http://localhost:3000" : null,
+  process.env.NODE_ENV === "development"
+    ? "https://pkpl-sariwangi.vercel.app/"
+    : null,
 ].filter((value): value is string => Boolean(value));
 
 export const auth = betterAuth({

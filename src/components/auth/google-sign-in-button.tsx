@@ -11,7 +11,8 @@ const defaultCallbackURL = () => {
     return window.location.origin + "/editor";
   }
   return (
-    (process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000") + "/editor"
+    (process.env.NEXT_PUBLIC_APP_URL ?? "https://pkpl-sariwangi.vercel.app/") +
+    "/editor"
   );
 };
 
