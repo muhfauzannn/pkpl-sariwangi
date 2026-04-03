@@ -180,41 +180,8 @@ export function ThemeEditor({
               </FieldGroup>
             </TabsContent>
           </Tabs>
-
-          <Card className="border border-border bg-background/70" size="sm">
-            <CardHeader>
-              <CardTitle>Preview</CardTitle>
-              <CardDescription>Preset saat ini.</CardDescription>
-            </CardHeader>
-            <CardContent className="grid gap-3 md:grid-cols-2">
-              <div className="rounded-2xl border border-border bg-muted/40 p-4">
-                <p className="text-sm text-muted-foreground">Warna aktif</p>
-                <p className="font-medium">{currentColor?.label}</p>
-                <p className="text-sm text-muted-foreground">
-                  {currentColor?.description}
-                </p>
-              </div>
-              <div className="rounded-2xl border border-border bg-muted/40 p-4">
-                <p className="text-sm text-muted-foreground">Font aktif</p>
-                <p className="font-medium">{currentFont?.label}</p>
-                <p className="text-sm text-muted-foreground">
-                  {currentFont?.description}
-                </p>
-              </div>
-            </CardContent>
-          </Card>
         </CardContent>
-        <CardFooter className="justify-between gap-3">
-          <p
-            aria-live="polite"
-            className={
-              state.status === "error"
-                ? "text-sm text-destructive"
-                : "text-sm text-muted-foreground"
-            }
-          >
-            {state.message || "Simpan untuk menerapkan."}
-          </p>
+        <CardFooter className="justify-end gap-3">
           <Button disabled={isPending} type="submit">
             <SaveIcon data-icon="inline-start" />
             {isPending ? "Menyimpan..." : "Simpan perubahan"}

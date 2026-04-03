@@ -15,18 +15,26 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { groupMembers, siteIdentity } from "@/lib/group-data";
+import { siteIdentity } from "@/lib/group-data";
 import { canEditSite, getServerSession, isAuthConfigured } from "@/lib/session";
 import { getSiteSettings } from "@/lib/site-settings";
 import { getColorPresetMeta, getFontPresetMeta } from "@/lib/theme";
 import { cn } from "@/lib/utils";
+import { db } from "@/db";
+import { member, user } from "@/db/schema";
+import { eq } from "drizzle-orm";
 
 export default async function EditorPage() {
   const session = await getServerSession();
 
-  const [siteTheme, editorAccess] = await Promise.all([
+  const [siteTheme, editorAccess, memberRecords] = await Promise.all([
     getSiteSettings(),
     canEditSite(session?.user?.email),
+    db
+      .select()
+      .from(member)
+      .leftJoin(user, eq(member.userId, user.id))
+      .orderBy(member.createdAt),
   ]);
   const authConfigured = isAuthConfigured();
   const colorMeta = getColorPresetMeta(siteTheme.colorPreset);
@@ -169,47 +177,58 @@ export default async function EditorPage() {
               </div>
 
               <div className="grid gap-6 md:grid-cols-2">
-                {groupMembers.map((member) => (
-                  <Card
-                    className="rounded-[28px] border border-border bg-background shadow-sm"
-                    key={member.name}
-                  >
-                    <CardHeader>
-                      <div className="flex items-start gap-4">
-                        <Avatar className="size-16 rounded-2xl">
-                          <AvatarFallback className="rounded-2xl text-base">
-                            {member.initials}
-                          </AvatarFallback>
-                        </Avatar>
-                        <div className="flex flex-1 flex-col gap-2">
-                          <div className="flex items-start justify-between gap-3">
-                            <div className="flex flex-col gap-1">
-                              <CardTitle>{member.name}</CardTitle>
-                              <CardDescription>{member.role}</CardDescription>
+                {memberRecords.map(({ member: m, user: u }) => {
+                  const imageUrl = u?.image || m.image;
+                  const initials = m.name
+                    .split(" ")
+                    .map((n) => n[0])
+                    .join("")
+                    .toUpperCase()
+                    .slice(0, 2);
+
+                  return (
+                    <Card
+                      className="rounded-[28px] border border-border bg-background shadow-sm"
+                      key={m.id}
+                    >
+                      <CardHeader>
+                        <div className="flex items-start gap-4">
+                          <Avatar className="size-16 rounded-2xl">
+                            {imageUrl ? (
+                              <img
+                                alt={m.name}
+                                src={imageUrl}
+                                className="size-full object-cover rounded-2xl"
+                              />
+                            ) : (
+                              <AvatarFallback className="rounded-2xl text-base bg-primary/20">
+                                {initials}
+                              </AvatarFallback>
+                            )}
+                          </Avatar>
+                          <div className="flex flex-1 flex-col gap-2">
+                            <div className="flex items-start justify-between gap-3">
+                              <div className="flex flex-col gap-1">
+                                <CardTitle>{m.name}</CardTitle>
+                                <CardDescription>{m.role}</CardDescription>
+                              </div>
+                              <div className="rounded-xl border border-border bg-muted/40 p-2 text-muted-foreground">
+                                <UserRoundIcon className="size-4" />
+                              </div>
                             </div>
-                            <div className="rounded-xl border border-border bg-muted/40 p-2 text-muted-foreground">
-                              <UserRoundIcon className="size-4" />
-                            </div>
-                          </div>
-                          <div className="flex flex-wrap gap-2">
-                            {member.tags.map((tag) => (
-                              <Badge key={tag} variant="secondary">
-                                {tag}
-                              </Badge>
-                            ))}
                           </div>
                         </div>
-                      </div>
-                    </CardHeader>
-                    <CardContent className="flex flex-col gap-4">
-                      <div className="rounded-2xl border border-border bg-muted/30 p-4">
-                        <p className="text-sm leading-relaxed text-muted-foreground">
-                          {member.focus}
-                        </p>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
+                      </CardHeader>
+                      <CardContent className="flex flex-col gap-4">
+                        <div className="rounded-2xl border border-border bg-muted/30 p-4">
+                          <p className="text-sm leading-relaxed text-muted-foreground line-clamp-3">
+                            {m.bio || "Tidak ada deskripsi"}
+                          </p>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  );
+                })}
               </div>
 
               <div className="grid gap-4 md:grid-cols-3">

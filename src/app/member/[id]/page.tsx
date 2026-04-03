@@ -9,6 +9,8 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { buttonVariants } from "@/components/ui/button-styles";
 import { cn } from "@/lib/utils";
 import { siteIdentity } from "@/lib/group-data";
+import { getServerSession } from "@/lib/session";
+import { MemberEditForm } from "@/components/member/member-edit-form";
 
 export default async function MemberPage({
   params,
@@ -16,6 +18,7 @@ export default async function MemberPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
+  const session = await getServerSession();
 
   const memberRecords = await db
     .select()
@@ -30,6 +33,7 @@ export default async function MemberPage({
 
   const { member: memberData, user: userData } = memberRecords[0];
   const imageUrl = userData?.image || memberData.image;
+  const canEdit = session?.user?.email === memberData.email;
 
   return (
     <>
@@ -90,27 +94,25 @@ export default async function MemberPage({
                 </div>
               </div>
 
-              {memberData.bio && (
-                <div className="flex flex-col gap-2">
-                  <h2 className="font-heading text-xl font-semibold">
-                    Biodata
-                  </h2>
-                  <p className="text-lg leading-relaxed text-muted-foreground whitespace-pre-wrap">
-                    {memberData.bio}
-                  </p>
-                </div>
+              {canEdit ? (
+                <MemberEditForm memberId={id} initialData={memberData} />
+              ) : (
+                <>
+                  {memberData.bio && (
+                    <div className="flex flex-col gap-2">
+                      <h2 className="font-heading text-xl font-semibold">
+                        Biodata
+                      </h2>
+                      <p className="text-lg leading-relaxed text-muted-foreground whitespace-pre-wrap">
+                        {memberData.bio}
+                      </p>
+                    </div>
+                  )}
+                </>
               )}
             </div>
           </div>
         </section>
-
-        <footer className="border-t border-border bg-background px-5 py-10 md:px-8">
-          <div className="mx-auto w-full max-w-7xl">
-            <div className="font-heading text-lg font-semibold">
-              {siteIdentity.teamName}
-            </div>
-          </div>
-        </footer>
       </main>
     </>
   );

@@ -24,40 +24,48 @@ import { member, allowedEmail } from "@/db/schema";
 
 const seedMembers = [
   {
-    name: "Nama Anggota 01",
-    email: "anggota1@example.com",
-    role: "Ketua Kelompok",
-    bio: "Koordinasi umum, arsitektur sistem, dan integrasi fitur antar bagian.",
+    name: "Muhammad Fauzan",
+    email: "fauzannmuhh@gmail.com",
+    role: "Fullstack Engineer",
+    bio: "Hai",
     image: null,
   },
   {
-    name: "Nama Anggota 02",
-    email: "anggota2@example.com",
+    name: "Annisa Fakhira Cendekia",
+    email: "annisalfahira@gmail.com",
     role: "Frontend Engineer",
-    bio: "Merancang dan mengimplementasikan komponen UI, layout responsif, dan pengalaman pengguna yang intuitif.",
+    bio: "aku annisa fakhira cendekia, biasanya dipanggil nisaa dari jurusan sistem informasi dan mbti akuu istj",
     image: null,
   },
   {
-    name: "Nama Anggota 03",
+    name: "Kalista Wiarta",
     email: "anggota3@example.com",
     role: "Backend Engineer",
-    bio: "Mengelola autentikasi, database, dan logika alur data antar halaman aplikasi.",
+    bio: "halo aku kalista, biasa dipanggil kall. aku suka banget denger lagu kalau lagi stress, terutama lagu Tulus",
     image: null,
   },
   {
-    name: "Nama Anggota 04",
+    name: "Saikhah Ummu Anja Amalia",
     email: "anggota4@example.com",
     role: "QA & Dokumentasi",
-    bio: "Menguji alur aplikasi, menulis dokumentasi teknis, dan memvalidasi semua requirement yang sudah disepakati.",
+    bio: "nama di ktp saikhah ummu anja amalia, kalo di tkp saikhah. domisili jakarta selatan. hobby horse riding walaupun looknya kaya just kidding. funfact suka jatoh ke sandung kaki sendiri.",
+    image: null,
+  },
+  {
+    name: "Airin",
+    email: "anggota5@example.com",
+    role: "QA & Dokumentasi",
+    bio: "nama di ktp saikhah ummu anja amalia, kalo di tkp saikhah. domisili jakarta selatan. hobby horse riding walaupun looknya kaya just kidding. funfact suka jatoh ke sandung kaki sendiri.",
     image: null,
   },
 ];
 
 const seedAllowedEmails = [
-  "anggota1@example.com",
-  "anggota2@example.com",
+  "fauzannmuhh@gmail.com",
+  "annisalfahira@gmail.com",
   "anggota3@example.com",
   "anggota4@example.com",
+  "anggota5@example.com",
 ];
 
 async function seed() {
