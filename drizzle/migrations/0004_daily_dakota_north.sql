@@ -1,0 +1,1 @@
+ALTER TABLE "site_settings" ADD COLUMN "colors" jsonb DEFAULT '{}'::jsonb NOT NULL;

@@ -98,8 +98,8 @@ export function ThemeEditor({
                   <FieldContent>
                     <ToggleGroup
                       aria-label="Preset warna"
-                      className="w-full flex flex-wrap gap-2"
-                      orientation="horizontal"
+                      className="w-full"
+                      orientation="vertical"
                       value={[colorPreset]}
                       onValueChange={(values) => {
                         const nextValue = values[0] as
@@ -113,26 +113,92 @@ export function ThemeEditor({
                     >
                       {colorPresets.map((preset) => (
                         <ToggleGroupItem
-                          className="h-auto justify-start gap-4 text-left"
+                          className="h-auto justify-start gap-4 rounded-2xl border border-border px-4 py-4 text-left"
                           key={preset.id}
                           value={preset.id}
                         >
-                          <div className="flex justify-center gap-3">
-                            <div className="flex shrink-0 gap-2 rounded-lg border overflow-hidden">
-                              <div
-                                className="w-8 h-8"
-                                style={{
-                                  backgroundColor: preset.primary,
-                                }}
-                                title={preset.primary}
-                              />
-                              <div
-                                className="w-8 h-8"
-                                style={{
-                                  backgroundColor: preset.secondary,
-                                }}
-                                title={preset.secondary}
-                              />
+                          <div className="flex flex-col gap-4 w-full">
+                            <div className="flex justify-between items-center">
+                              <div>
+                                <h4 className="font-medium">{preset.label}</h4>
+                                <p className="text-xs text-muted-foreground">
+                                  {preset.description}
+                                </p>
+                              </div>
+                            </div>
+                            <div className="grid grid-cols-3 gap-2">
+                              <div className="flex flex-col gap-2">
+                                <label className="text-xs font-medium">
+                                  Primary
+                                </label>
+                                <div className="flex gap-2">
+                                  <div
+                                    className="w-8 h-8 rounded border"
+                                    style={{
+                                      backgroundColor: preset.primary,
+                                    }}
+                                    title={preset.primary}
+                                  />
+                                  <div
+                                    className="w-8 h-8 rounded border flex items-center justify-center text-xs font-bold"
+                                    style={{
+                                      backgroundColor: preset.primary,
+                                      color: preset.primaryForeground,
+                                    }}
+                                    title={preset.primaryForeground}
+                                  >
+                                    A
+                                  </div>
+                                </div>
+                              </div>
+                              <div className="flex flex-col gap-2">
+                                <label className="text-xs font-medium">
+                                  Secondary
+                                </label>
+                                <div className="flex gap-2">
+                                  <div
+                                    className="w-8 h-8 rounded border"
+                                    style={{
+                                      backgroundColor: preset.secondary,
+                                    }}
+                                    title={preset.secondary}
+                                  />
+                                  <div
+                                    className="w-8 h-8 rounded border flex items-center justify-center text-xs font-bold"
+                                    style={{
+                                      backgroundColor: preset.secondary,
+                                      color: preset.secondaryForeground,
+                                    }}
+                                    title={preset.secondaryForeground}
+                                  >
+                                    A
+                                  </div>
+                                </div>
+                              </div>
+                              <div className="flex flex-col gap-2">
+                                <label className="text-xs font-medium">
+                                  Tertiary
+                                </label>
+                                <div className="flex gap-2">
+                                  <div
+                                    className="w-8 h-8 rounded border"
+                                    style={{
+                                      backgroundColor: preset.tertiary,
+                                    }}
+                                    title={preset.tertiary}
+                                  />
+                                  <div
+                                    className="w-8 h-8 rounded border flex items-center justify-center text-xs font-bold"
+                                    style={{
+                                      backgroundColor: preset.tertiary,
+                                      color: preset.tertiaryForeground,
+                                    }}
+                                    title={preset.tertiaryForeground}
+                                  >
+                                    A
+                                  </div>
+                                </div>
+                              </div>
                             </div>
                           </div>
                         </ToggleGroupItem>

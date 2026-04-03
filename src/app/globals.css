@@ -51,63 +51,38 @@
 :root {
   --font-sans: var(--font-geist-sans);
   --font-heading: var(--font-geist-sans);
-  --background: #f3e3d0;
-  --foreground: #26333f;
-  --card: #fff9f2;
-  --card-foreground: #26333f;
-  --popover: #fff9f2;
-  --popover-foreground: #26333f;
-  --primary: #81a6c6;
-  --primary-foreground: #13202b;
-  --secondary: #aacddc;
-  --secondary-foreground: #24303c;
-  --muted: #efe0ce;
-  --muted-foreground: #5b6870;
-  --accent: #d2c4b4;
-  --accent-foreground: #24303c;
+  --background: #f0f7ff;
+  --foreground: #0a1428;
+  --card: #ffffff;
+  --card-foreground: #0a1428;
+  --popover: #ffffff;
+  --popover-foreground: #0a1428;
+  --primary: #0066cc;
+  --primary-foreground: #ffffff;
+  --secondary: #00ccff;
+  --secondary-foreground: #000000;
+  --muted: #cce5ff;
+  --muted-foreground: #333333;
+  --accent: #3399ff;
+  --accent-foreground: #ffffff;
   --destructive: #c85c5c;
-  --border: #d2c4b4;
+  --border: #99ccff;
   --input: #fffdf9;
-  --ring: #81a6c6;
-  --chart-1: #81a6c6;
-  --chart-2: #aacddc;
-  --chart-3: #d2c4b4;
-  --chart-4: #f3e3d0;
-  --chart-5: #5b6870;
+  --ring: #0066cc;
+  --chart-1: #0066cc;
+  --chart-2: #00ccff;
+  --chart-3: #0099ff;
+  --chart-4: #f0f7ff;
+  --chart-5: #3399ff;
   --radius: 1rem;
-  --sidebar: #fff9f2;
-  --sidebar-foreground: #26333f;
-  --sidebar-primary: #81a6c6;
-  --sidebar-primary-foreground: #13202b;
-  --sidebar-accent: #aacddc;
-  --sidebar-accent-foreground: #24303c;
-  --sidebar-border: #d2c4b4;
-  --sidebar-ring: #81a6c6;
-}
-
-body[data-color-preset="embun"] {
-  --background: #f3e3d0;
-  --primary: #aacddc;
-  --secondary: #81a6c6;
-  --accent: #d2c4b4;
-  --ring: #aacddc;
-}
-
-body[data-color-preset="pasir"] {
-  --background: #f3e3d0;
-  --primary: #d2c4b4;
-  --secondary: #aacddc;
-  --accent: #81a6c6;
-  --ring: #d2c4b4;
-}
-
-body[data-color-preset="batu"] {
-  --background: #f3e3d0;
-  --primary: #26333f;
-  --primary-foreground: #f3e3d0;
-  --secondary: #d2c4b4;
-  --accent: #aacddc;
-  --ring: #81a6c6;
+  --sidebar: #ffffff;
+  --sidebar-foreground: #0a1428;
+  --sidebar-primary: #0066cc;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #00ccff;
+  --sidebar-accent-foreground: #000000;
+  --sidebar-border: #99ccff;
+  --sidebar-ring: #0066cc;
 }
 
 body[data-font-preset="manrope"] {
@@ -136,7 +111,9 @@ body[data-font-preset="lora"] {
 
   body {
     @apply bg-background text-foreground;
-    font-feature-settings: "rlig" 1, "calt" 1;
+    font-feature-settings:
+      "rlig" 1,
+      "calt" 1;
   }
 
   h1,

@@ -48,10 +48,28 @@ export default async function RootLayout({
 }>) {
   const siteTheme = await getSiteSettings();
 
+  const colorStyle = {
+    "--primary": siteTheme.colors.primary,
+    "--primary-foreground": siteTheme.colors.primaryForeground,
+    "--secondary": siteTheme.colors.secondary,
+    "--secondary-foreground": siteTheme.colors.secondaryForeground,
+    "--accent": siteTheme.colors.accent,
+    "--accent-foreground": siteTheme.colors.accentForeground,
+    "--background": siteTheme.colors.background,
+    "--foreground": siteTheme.colors.foreground,
+    "--card": siteTheme.colors.card,
+    "--card-foreground": siteTheme.colors.cardForeground,
+    "--muted": siteTheme.colors.muted,
+    "--muted-foreground": siteTheme.colors.mutedForeground,
+    "--border": siteTheme.colors.border,
+    "--ring": siteTheme.colors.primary,
+  } as React.CSSProperties;
+
   return (
     <html
       lang="id"
       className={`${geistSans.variable} ${geistMono.variable} ${manrope.variable} ${jakarta.variable} ${lora.variable} h-full antialiased`}
+      style={colorStyle}
     >
       <body
         className="min-h-full"
