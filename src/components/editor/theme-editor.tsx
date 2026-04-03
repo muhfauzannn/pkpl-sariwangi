@@ -118,16 +118,9 @@ export function ThemeEditor({
                           value={preset.id}
                         >
                           <div className="flex flex-col gap-4 w-full">
-                            <div className="flex justify-between items-center">
-                              <div>
-                                <h4 className="font-medium">{preset.label}</h4>
-                                <p className="text-xs text-muted-foreground">
-                                  {preset.description}
-                                </p>
-                              </div>
-                            </div>
-                            <div className="grid grid-cols-3 gap-2">
-                              <div className="flex flex-col gap-2">
+                            <div className="flex justify-between items-center"></div>
+                            <div className="grid grid-cols-3">
+                              <div className="flex flex-col justify-center items-center gap-2">
                                 <label className="text-xs font-medium">
                                   Primary
                                 </label>
@@ -151,7 +144,7 @@ export function ThemeEditor({
                                   </div>
                                 </div>
                               </div>
-                              <div className="flex flex-col gap-2">
+                              <div className="flex flex-col justify-center items-center gap-2">
                                 <label className="text-xs font-medium">
                                   Secondary
                                 </label>
@@ -175,7 +168,7 @@ export function ThemeEditor({
                                   </div>
                                 </div>
                               </div>
-                              <div className="flex flex-col gap-2">
+                              <div className="flex flex-col justify-center items-center gap-2">
                                 <label className="text-xs font-medium">
                                   Tertiary
                                 </label>
