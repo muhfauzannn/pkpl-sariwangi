@@ -13,7 +13,7 @@ type GoogleSignInButtonProps = {
 };
 
 export function GoogleSignInButton({
-  callbackURL = "/editor",
+  callbackURL = process.env.NEXT_PUBLIC_APP_URL + "/editor",
   disabled = false,
   label = "Masuk dengan Google",
 }: GoogleSignInButtonProps) {
